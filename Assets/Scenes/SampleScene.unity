@@ -241,7 +241,7 @@ GameObject:
   - component: {fileID: 62119177}
   - component: {fileID: 62119176}
   m_Layer: 0
-  m_Name: New Sprite
+  m_Name: Fondo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2543,7 +2543,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7794118, y: 1}
+    m_SensorSize: {x: 0.8181818, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
