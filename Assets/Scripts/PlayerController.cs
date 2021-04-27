@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public float playerSpeed = 5.0f;
 
     float currentPlayerSpeed = 0;
+    bool isRun = false;
     public float jumpHeight = 2.5f;
     public float gravityValue = -12f;
 
@@ -169,11 +170,20 @@ public class PlayerController : MonoBehaviour
                 if (Vector3.Dot(gameObject.transform.forward, move) < 0) animator.SetFloat("DefendingVelocity", -1);
                 else animator.SetFloat("DefendingVelocity", 1);
             }
-            else currentPlayerSpeed = playerSpeed;
+            else if (isRun)
+            {
+                currentPlayerSpeed = playerSpeed;
+            }
+
+            else 
+                currentPlayerSpeed = playerSpeed/1.5f;
 
             controller.Move(move * Time.deltaTime * currentPlayerSpeed);
 
             if (!groundedPlayer) animator.SetFloat("VelocityX", 0);
+            else if (!isRun && move.x!=0 ){
+                animator.SetFloat("VelocityX", 0.3f);
+            }
             else animator.SetFloat("VelocityX", Mathf.Abs(move.x));
 
             if (move != Vector3.zero)
@@ -217,6 +227,15 @@ public class PlayerController : MonoBehaviour
         {
             shieldCollider.isTrigger = true;
             isDefending = false;
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            isRun = true;
+        }
+        else
+        {
+            isRun = false;
         }
 
         animator.SetBool("IsDefending", isDefending);
