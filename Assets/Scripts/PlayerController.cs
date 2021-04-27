@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,15 +31,25 @@ public class PlayerController : MonoBehaviour
 
     private Quaternion _targetRot = Quaternion.identity;
 
-    public Transform groundCheck;
 
     bool attackHitDetect = false;
     public float attackHitMaxDistance = 5;
     RaycastHit attackHit;
 
+    public Transform groundCheck;
     bool groundHitDetect = false;
     public float groundHitMaxDistance = 5;
     RaycastHit groundHit;
+    public Transform eyes;
+    bool objectHitDetect = false;
+    public float visionRange = 3;
+    public float wallHitMaxDistance = 0.1f;
+    bool isInFrontOfTheWall = false;
+
+    Vector3 expandColliderControllerCenter = new Vector3(0, 0.75f, 0.2f);
+    float expandRadius = 0.45f;
+    Vector3 normalColliderControllerCenter = new Vector3(0, 0.75f, 0f);
+    float normalRadius = 0.15f;
     Vector3 move;
     [SerializeField]
     private float _rotateSpeed = 5f;
@@ -55,11 +65,7 @@ public class PlayerController : MonoBehaviour
     void OnDrawGizmos()
     {
         DrawGroundCast();
-    }
-
-    void DrawAttackCast()
-    {
-
+        DrawEyesCast();
     }
     void DrawGroundCast()
     {
@@ -83,32 +89,60 @@ public class PlayerController : MonoBehaviour
             Gizmos.DrawWireCube(groundCheck.position - groundCheck.transform.up * groundHitMaxDistance, groundCheck.transform.localScale);
         }
     }
-    bool IsGrounded()
+
+    void DrawEyesCast()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(eyes.position, visionRange);
+    }
+
+
+    bool IsInFrontOfTheWall()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(eyes.position, visionRange);
+        foreach (var other in hitColliders)
+        {
+            if (other.gameObject.tag == "Wall")
+            {
+                Debug.Log("CHOCANDOOO");
+                return true;
+
+            }
+        }
+        return false;
+    }
+    bool IsOnGround()
     {
         groundHitDetect = Physics.BoxCast(groundCheck.position, groundCheck.transform.localScale, -groundCheck.transform.up, out groundHit, groundCheck.rotation, groundHitMaxDistance);
         if (groundHitDetect)
         {
-            //Output the name of the Collider your Box hit
-            Debug.Log("Hit tag: " + groundHit.collider.tag);
-            Vector3 groundPosition = groundHit.point;
-            //Debug.Log(Mathf.Abs(groundCheck.position.y - groundPosition.y));
-            //Si la distancia con el jugador es <= distance
-            if (Mathf.Abs(groundCheck.position.y - groundPosition.y) <= 0.1)
+            if (groundHit.collider.tag != "Item")
             {
-                return true;
+                Vector3 groundPosition = groundHit.point;
+                if (Mathf.Abs(groundCheck.position.y - groundPosition.y) <= 0.2)
+                {
+                    return true;
+                }
             }
-
         }
         return false;
     }
     void Update()
     {
+        Vector3 positionAux = transform.position;
+        positionAux.z = 0;
+        transform.position = positionAux;
+
         if (!isDied)
         {
-            groundedPlayer = IsGrounded();
+            groundedPlayer = IsOnGround();
+
+            isInFrontOfTheWall = IsInFrontOfTheWall();
+
             animator.SetBool("IsGrounded", groundedPlayer);
 
             animator.SetFloat("VelocityY", playerVelocity.y);
+
 
             if (groundedPlayer && playerVelocity.y < 0)
             {
@@ -116,6 +150,19 @@ public class PlayerController : MonoBehaviour
             }
 
             move = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
+
+            if (isInFrontOfTheWall)
+            {
+                controller.Move(1f * -transform.forward * Time.deltaTime);
+                controller.center = expandColliderControllerCenter;
+                controller.radius = expandRadius;
+            }
+            else
+            {
+                controller.center = normalColliderControllerCenter;
+                controller.radius = normalRadius;
+            }
+
             if (isDefending)
             {
                 currentPlayerSpeed = playerSpeed / 4;
@@ -141,6 +188,7 @@ public class PlayerController : MonoBehaviour
             }
 
             playerVelocity.y += gravityValue * Time.deltaTime;
+
             controller.Move(playerVelocity * Time.deltaTime);
 
 
@@ -152,6 +200,11 @@ public class PlayerController : MonoBehaviour
     public void WeaponAttack()
     {
         weapon.Attack();
+    }
+
+    void Ejemplo()
+    {
+
     }
     void Actions()
     {
