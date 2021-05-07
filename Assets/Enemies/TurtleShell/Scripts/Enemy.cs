@@ -185,8 +185,6 @@ public class Enemy : MonoBehaviour
         if (!die)
         {
             Vision();
-            Debug.Log(attack1);
-            Debug.Log(ShellTrigger());
             if (attack1) animator.Play("Attack01");
             else if (ShellTrigger()) animator.Play("ShellAttack");
 

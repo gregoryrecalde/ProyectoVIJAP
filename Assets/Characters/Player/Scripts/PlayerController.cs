@@ -142,7 +142,7 @@ public class PlayerController : MonoBehaviour
         groundHitDetect = Physics.BoxCast(groundCheck.position, groundCheck.transform.localScale, -groundCheck.transform.up, out groundHit, groundCheck.rotation, groundHitMaxDistance);
         if (groundHitDetect)
         {
-            if (groundHit.collider.tag != "Item")
+            if (groundHit.collider.tag != "Item" && groundHit.collider.tag != "Food")
             {
                 Vector3 groundPosition = groundHit.point;
                 if (Mathf.Abs(groundCheck.position.y - groundPosition.y) <= 0.2)
