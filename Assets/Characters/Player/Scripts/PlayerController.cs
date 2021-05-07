@@ -1,0 +1,329 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+public class PlayerController : MonoBehaviour
+{
+    Animator animator;
+    //PlayerProperties es la clase donde almacenaremos la vida, magia, etc.
+    PlayerProperties playerProperties;
+    //https://docs.unity3d.com/ScriptReference/CharacterController.Move.html
+    public CharacterController controller;
+    private Vector3 playerVelocity;
+    public bool groundedPlayer;
+    public float playerSpeed = 5.0f;
+
+    float currentPlayerSpeed = 0;
+    bool isRun = false;
+    public float jumpHeight = 2.5f;
+    public float gravityValue = -12f;
+
+    public ParticleSystem shieldBlockEffect;
+    public GameObject dieRecoverEffect;
+
+    public Weapon weapon;
+    public Slider lifeBar;
+
+    public bool isDied = false;
+    public bool isDefending = false;
+
+    bool isDieRecovering = false;
+    public Collider shieldCollider;
+
+    private Quaternion _targetRot = Quaternion.identity;
+
+
+    bool attackHitDetect = false;
+    public float attackHitMaxDistance = 5;
+    RaycastHit attackHit;
+
+    public Transform groundCheck;
+    bool groundHitDetect = false;
+    public float groundHitMaxDistance = 5;
+    RaycastHit groundHit;
+    public Transform frontCheck;
+    public Transform backCheck;
+    bool objectHitDetect = false;
+    public float visionRange = 3;
+    public float wallHitMaxDistance = 0.1f;
+    bool isInFrontOfTheWall = false;
+    bool isBackOfTheWall = false;
+
+    Vector3 expandColliderControllerCenter = new Vector3(0, 0.75f, 0.2f);
+    float expandRadius = 0.45f;
+    Vector3 normalColliderControllerCenter = new Vector3(0, 0.75f, 0f);
+    float normalRadius = 0.15f;
+    Vector3 move;
+    [SerializeField]
+    private float _rotateSpeed = 5f;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        playerProperties = GetComponent<PlayerProperties>();
+        controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
+    }
+
+    void OnDrawGizmos()
+    {
+        DrawGroundCast();
+        DrawFrontCheckCast();
+        DrawBackCheckCast();
+    }
+    void DrawGroundCast()
+    {
+        Gizmos.color = Color.red;
+
+        //Check if there has been a hit yet
+        if (groundHitDetect)
+        {
+            //Draw a Ray forward from GameObject toward the hit
+            Gizmos.DrawRay(groundCheck.position, -groundCheck.transform.up * groundHit.distance);
+            //Draw a cube that extends to where the hit exists
+            Gizmos.DrawWireCube(groundCheck.position - groundCheck.transform.up * groundHit.distance, groundCheck.transform.localScale);
+        }
+
+        //If there hasn't been a hit yet, draw the ray at the maximum distance
+        else
+        {
+            //Draw a Ray forward from GameObject toward the maximum distance
+            Gizmos.DrawRay(groundCheck.position, -groundCheck.transform.up * groundHitMaxDistance);
+            //Draw a cube at the maximum distance
+            Gizmos.DrawWireCube(groundCheck.position - groundCheck.transform.up * groundHitMaxDistance, groundCheck.transform.localScale);
+        }
+    }
+
+    void DrawFrontCheckCast()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(frontCheck.position, visionRange);
+    }
+
+    void DrawBackCheckCast()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(backCheck.position, visionRange);
+    }
+
+
+    bool IsInFrontOfTheWall()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(frontCheck.position, visionRange);
+        foreach (var other in hitColliders)
+        {
+            if (other.gameObject.tag == "Wall")
+            {
+                Debug.Log("CHOCANDOOO");
+                return true;
+
+            }
+        }
+        return false;
+    }
+
+
+    bool IsBackOfTheWall()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(backCheck.position, visionRange);
+        foreach (var other in hitColliders)
+        {
+            if (other.gameObject.tag == "Wall")
+            {
+                Debug.Log("CHOCANDOOO");
+                return true;
+
+            }
+        }
+        return false;
+    }
+    bool IsOnGround()
+    {
+        groundHitDetect = Physics.BoxCast(groundCheck.position, groundCheck.transform.localScale, -groundCheck.transform.up, out groundHit, groundCheck.rotation, groundHitMaxDistance);
+        if (groundHitDetect)
+        {
+            if (groundHit.collider.tag != "Item")
+            {
+                Vector3 groundPosition = groundHit.point;
+                if (Mathf.Abs(groundCheck.position.y - groundPosition.y) <= 0.2)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    void Update()
+    {
+        Vector3 positionAux = transform.position;
+        positionAux.z = 0;
+        transform.position = positionAux;
+
+        if (!isDied)
+        {
+            groundedPlayer = IsOnGround();
+
+            isInFrontOfTheWall = IsInFrontOfTheWall();
+            isBackOfTheWall = IsBackOfTheWall();
+
+            animator.SetBool("IsGrounded", groundedPlayer);
+
+            animator.SetFloat("VelocityY", playerVelocity.y);
+
+
+            if (groundedPlayer && playerVelocity.y < 0)
+            {
+                playerVelocity.y = 0f;
+            }
+
+            move = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
+
+            if (isInFrontOfTheWall)
+            {
+                controller.Move(1f * -transform.forward * Time.deltaTime);
+                controller.center = expandColliderControllerCenter;
+                controller.radius = expandRadius;
+            }
+            else if (isBackOfTheWall)
+            {
+                controller.Move(1f * transform.forward * Time.deltaTime);
+                controller.center = expandColliderControllerCenter;
+                controller.radius = expandRadius;
+            }
+            else
+            {
+                controller.center = normalColliderControllerCenter;
+                controller.radius = normalRadius;
+            }
+
+            if (isDefending)
+            {
+                currentPlayerSpeed = playerSpeed / 4;
+                if (Vector3.Dot(gameObject.transform.forward, move) < 0) animator.SetFloat("DefendingVelocity", -1);
+                else animator.SetFloat("DefendingVelocity", 1);
+            }
+            else if (isRun)
+            {
+                currentPlayerSpeed = playerSpeed;
+            }
+
+            else currentPlayerSpeed = playerSpeed / 2f;
+
+            controller.Move(move * Time.deltaTime * currentPlayerSpeed);
+
+            if (!groundedPlayer) animator.SetFloat("VelocityX", 0);
+            else if (!isRun && move.x != 0)
+            {
+                animator.SetFloat("VelocityX", 0.4f);
+            }
+            else animator.SetFloat("VelocityX", Mathf.Abs(move.x));
+
+            if (move != Vector3.zero && !isDefending)
+            {
+                gameObject.transform.forward = move;
+            }
+
+            // Changes the height position of the player..
+            if (Input.GetButtonDown("Jump") && groundedPlayer)
+            {
+                playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+            }
+
+            playerVelocity.y += gravityValue * Time.deltaTime;
+
+            controller.Move(playerVelocity * Time.deltaTime);
+
+
+            animator.SetFloat("VelocityY", controller.velocity.y);
+            Actions();
+            CheckHealth();
+            Debug.Log("ESTÁ VIVO");
+        }
+        if (Input.GetKeyDown(KeyCode.R)) Respawn();
+
+    }
+
+    public void WeaponAttack()
+    {
+        weapon.Attack();
+    }
+
+    void CheckHealth()
+    {
+        lifeBar.value = playerProperties.GetLife();
+
+        if (playerProperties.GetLife() <= 0)
+        {
+            {
+                isDied = true;
+                animator.SetBool("IsDied", isDied);
+                animator.Play("Die");
+                Debug.Log("Die");
+            }
+        }
+
+    }
+    void Actions()
+    {
+        if (Input.GetKey(KeyCode.Q))
+        {
+            isDefending = true;
+            shieldCollider.isTrigger = false;
+        }
+        else
+        {
+            shieldCollider.isTrigger = true;
+            isDefending = false;
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            isRun = true;
+        }
+        else
+        {
+            isRun = false;
+        }
+
+        animator.SetBool("IsDefending", isDefending);
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            animator.Play("Attack01");
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            animator.Play("Attack02");
+        }
+    }
+
+    void Respawn()
+    {
+        if (!isDieRecovering)
+        {
+            isDied = true;
+            animator.SetBool("IsDied", isDied);
+            Debug.Log("Resurrection");
+            GameObject go = Instantiate(dieRecoverEffect);
+            go.transform.parent = transform;
+            go.transform.position = transform.position;
+            animator.Play("DieRecoverCustom");
+            isDieRecovering = true;
+        }
+
+    }
+    void DieRecover()
+    {
+        playerProperties.ResetLife();
+        isDieRecovering = false;
+        isDied = false;
+        animator.SetBool("IsDied", isDied);
+    }
+
+
+    public void GetHit(float damage)
+    {
+        playerProperties.SetLife(-damage);
+        animator.Play("GetHit");
+    }
+}
