@@ -10,6 +10,11 @@ public class Game : MonoBehaviour
     public static int foodB = 0;
     public static int foodC = 0;
 
+    public static AudioSource audioSource;
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -17,12 +22,17 @@ public class Game : MonoBehaviour
         if (state == 2) Debug.Log("GameOver xd");
     }
 
+    public static void PlaySound(AudioClip audioClip)
+    {
+        audioSource.PlayOneShot(audioClip);
+    }
+
     public static void IncreaseFood(char foodType)
     {
-        if(foodType=='A') foodA++;
-        if(foodType=='B') foodB++;
-        if(foodType=='C') foodC++;
-        Debug.Log("Foods: A = "+ foodA+" | B = "+foodB+" C = "+foodC);
+        if (foodType == 'A') foodA++;
+        if (foodType == 'B') foodB++;
+        if (foodType == 'C') foodC++;
+        Debug.Log("Foods: A = " + foodA + " | B = " + foodB + " C = " + foodC);
     }
     public static void GameOver()
     {

@@ -32,6 +32,7 @@ public class Weapon : MonoBehaviour
                 }
             }
         }
+        CameraController.Shake();
 
     }
 

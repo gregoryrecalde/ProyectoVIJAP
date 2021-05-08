@@ -57,12 +57,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float _rotateSpeed = 5f;
 
+    AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
         playerProperties = GetComponent<PlayerProperties>();
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void OnDrawGizmos()
@@ -214,7 +216,7 @@ public class PlayerController : MonoBehaviour
             if (!groundedPlayer) animator.SetFloat("VelocityX", 0);
             else if (!isRun && move.x != 0)
             {
-                animator.SetFloat("VelocityX", 0.4f);
+                animator.SetFloat("VelocityX", 0.3f);
             }
             else animator.SetFloat("VelocityX", Mathf.Abs(move.x));
 
@@ -325,5 +327,11 @@ public class PlayerController : MonoBehaviour
     {
         playerProperties.SetLife(-damage);
         animator.Play("GetHit");
+    }
+
+    void PlaySound(AudioClip audioClip)
+    {
+        Debug.Log(audioClip.name);
+        audioSource.PlayOneShot(audioClip);
     }
 }

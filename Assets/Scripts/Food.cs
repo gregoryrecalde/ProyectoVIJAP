@@ -8,18 +8,20 @@ public class Food : MonoBehaviour
     bool isObteined = false;
     public ParticleSystem particleSystem;
     Animator animator;
-    
+
+    public AudioClip obteinedSfx;
     void Start()
     {
         animator = GetComponent<Animator>();
     }
-    
+
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.gameObject.tag);
-        if(other.gameObject.tag=="Player" && !isObteined)
+        if (other.gameObject.tag == "Player" && !isObteined)
         {
             animator.Play("FoodObteined");
+            Game.PlaySound(obteinedSfx);
             isObteined = true;
             Game.IncreaseFood(foodType);
         }
