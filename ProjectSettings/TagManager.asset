@@ -11,6 +11,7 @@ TagManager:
   - Room
   - Enemy
   - Item
+  - Food
   layers:
   - Default
   - TransparentFX
