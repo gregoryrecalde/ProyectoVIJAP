@@ -15,4 +15,9 @@ public class CameraController : MonoBehaviour
     {
         animator.Play("Shake");
     }
+
+    public static void SetInteractiveCamera(bool value)
+    {
+        animator.SetBool("IsInteracting", value);
+    }
 }

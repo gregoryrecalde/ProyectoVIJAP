@@ -4,29 +4,37 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public ParticleSystem particleSystem;
-    public int id;
+    public string ItemType;
     bool isObteined = false;
+    public ParticleSystem particleSystem;
     Animator animator;
 
+    public AudioClip obteinedSfx;
     void Start()
     {
         animator = GetComponent<Animator>();
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") && !isObteined)
+        Debug.Log(other.gameObject.tag);
+        if (other.gameObject.tag == "Player" && !isObteined)
         {
+            animator.Play("ItemObteined");
+            Game.PlaySound(obteinedSfx);
             isObteined = true;
-            Game.items[id]=isObteined;
-            animator.Play("Obteined");
+            Game.food++;
         }
     }
 
     void Effect()
     {
         Instantiate(particleSystem, transform.position, Quaternion.identity);
-        Destroy(gameObject, 1f);
     }
+
+    void DestroyFood()
+    {
+        Destroy(gameObject);
+    }
+
 }

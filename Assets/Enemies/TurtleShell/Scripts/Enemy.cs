@@ -13,8 +13,6 @@ public class Enemy : MonoBehaviour
 
     public GameObject target;
 
-    public Transform eyes;
-
     bool isAlert = false;
 
     public float speed = 1;
@@ -48,6 +46,8 @@ public class Enemy : MonoBehaviour
                 isAlert = true;
                 Vector3 playerPosition = playerHit.point;
                 float currentDistance = Mathf.Abs(transform.position.x - playerPosition.x);
+
+                Debug.Log("CurrentDistance: " + currentDistance + " | minFollowDistance: " + minFollowDistance + " | maxFollowDistance: " + maxFollowDistance);
                 if (currentDistance > minFollowDistance && currentDistance <= maxFollowDistance)
                 {
                     transform.Translate(transform.right * Time.deltaTime);
@@ -57,11 +57,22 @@ public class Enemy : MonoBehaviour
                     target = playerHit.transform.gameObject;
                     attack1 = true;
                 }
-                else attack1 = false;
+                else
+                {
+                    target = null;
+                    attack1 = false;
+                }
+            }
+            else
+            {
+                target = null;
+                isAlert = false;
+                attack1 = false;
             }
         }
         else
         {
+            target = null;
             isAlert = false;
             attack1 = false;
         }
@@ -185,6 +196,7 @@ public class Enemy : MonoBehaviour
         if (!die)
         {
             Vision();
+            Debug.Log("ATTACK1 " + attack1);
             if (attack1) animator.Play("Attack01");
             else if (ShellTrigger()) animator.Play("ShellAttack");
 

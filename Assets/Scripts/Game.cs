@@ -5,10 +5,11 @@ using UnityEngine;
 public class Game : MonoBehaviour
 {
     public static int state = 0; // 0 pause, 1 start, 2 gameover
-    public static bool[] items = new bool[] { false, false, false };
-    public static int foodA = 0;
-    public static int foodB = 0;
-    public static int foodC = 0;
+    public static int food = 4;
+    public static int water = 5;
+    public static int pets = 0;
+
+    public static Pet currentPet;
 
     public static AudioSource audioSource;
     void Start()
@@ -18,30 +19,57 @@ public class Game : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (AllItems()) Debug.Log("Has encontrado todos los objectos");
         if (state == 2) Debug.Log("GameOver xd");
     }
-
     public static void PlaySound(AudioClip audioClip)
     {
         audioSource.PlayOneShot(audioClip);
-    }
-
-    public static void IncreaseFood(char foodType)
-    {
-        if (foodType == 'A') foodA++;
-        if (foodType == 'B') foodB++;
-        if (foodType == 'C') foodC++;
-        Debug.Log("Foods: A = " + foodA + " | B = " + foodB + " C = " + foodC);
     }
     public static void GameOver()
     {
         state = 2;
         Debug.Log("GameOver");
     }
-    bool AllItems()
+
+    public void Use(string itemName)
     {
-        if (items[0] && items[1] && items[2]) return true;
-        else return false;
+        if (currentPet != null)
+        {
+
+            switch (itemName)
+            {
+                case "food":
+                    if (!currentPet.FoodFull() && food > 0)
+                    {
+                        food--;
+                        currentPet.foodRequired--;
+                        currentPet.PlayEffect(itemName);
+                    }
+                    break;
+                case "water":
+                    if (!currentPet.WaterFull() && water > 0)
+                    {
+                        water--;
+                        currentPet.waterRequired--;
+                        currentPet.PlayEffect(itemName);
+                    }
+                    break;
+                case "love":
+                    if (!currentPet.LoveFull())
+                    {
+                        currentPet.loveRequired--;
+                        currentPet.PlayEffect(itemName);
+                    }
+                    break;
+                case "shower":
+                    if (!currentPet.ShowerFull())
+                    {
+                        currentPet.showerRequired--;
+                        currentPet.PlayEffect(itemName);
+                    }
+                    break;
+                default: break;
+            }
+        }
     }
 }

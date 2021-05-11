@@ -56,6 +56,7 @@ public class PlayerController : MonoBehaviour
     Vector3 move;
     [SerializeField]
     private float _rotateSpeed = 5f;
+    public static bool canAction = true;
 
     AudioSource audioSource;
     // Start is called before the first frame update
@@ -116,7 +117,6 @@ public class PlayerController : MonoBehaviour
         {
             if (other.gameObject.tag == "Wall")
             {
-                Debug.Log("CHOCANDOOO");
                 return true;
 
             }
@@ -132,7 +132,6 @@ public class PlayerController : MonoBehaviour
         {
             if (other.gameObject.tag == "Wall")
             {
-                Debug.Log("CHOCANDOOO");
                 return true;
 
             }
@@ -144,7 +143,7 @@ public class PlayerController : MonoBehaviour
         groundHitDetect = Physics.BoxCast(groundCheck.position, groundCheck.transform.localScale, -groundCheck.transform.up, out groundHit, groundCheck.rotation, groundHitMaxDistance);
         if (groundHitDetect)
         {
-            if (groundHit.collider.tag != "Item" && groundHit.collider.tag != "Food")
+            if (groundHit.collider.tag != "Item" && groundHit.collider.tag != "Food" && groundHit.collider.tag != "Pet")
             {
                 Vector3 groundPosition = groundHit.point;
                 if (Mathf.Abs(groundCheck.position.y - groundPosition.y) <= 0.2)
@@ -157,6 +156,7 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+
         Vector3 positionAux = transform.position;
         positionAux.z = 0;
         transform.position = positionAux;
@@ -226,7 +226,7 @@ public class PlayerController : MonoBehaviour
             }
 
             // Changes the height position of the player..
-            if (Input.GetButtonDown("Jump") && groundedPlayer)
+            if (Input.GetButtonDown("Jump") && groundedPlayer && canAction)
             {
                 playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
             }
@@ -235,13 +235,11 @@ public class PlayerController : MonoBehaviour
 
             controller.Move(playerVelocity * Time.deltaTime);
 
-
             animator.SetFloat("VelocityY", controller.velocity.y);
-            Actions();
+            if (canAction) Actions();
             CheckHealth();
-            Debug.Log("ESTÁ VIVO");
         }
-        if (Input.GetKeyDown(KeyCode.R)) Respawn();
+        if (Input.GetKeyDown(KeyCode.R) && !isDieRecovering && canAction) Respawn();
 
     }
 
@@ -253,17 +251,14 @@ public class PlayerController : MonoBehaviour
     void CheckHealth()
     {
         lifeBar.value = playerProperties.GetLife();
-
         if (playerProperties.GetLife() <= 0)
         {
             {
                 isDied = true;
                 animator.SetBool("IsDied", isDied);
                 animator.Play("Die");
-                Debug.Log("Die");
             }
         }
-
     }
     void Actions()
     {
@@ -305,7 +300,6 @@ public class PlayerController : MonoBehaviour
         {
             isDied = true;
             animator.SetBool("IsDied", isDied);
-            Debug.Log("Resurrection");
             GameObject go = Instantiate(dieRecoverEffect);
             go.transform.parent = transform;
             go.transform.position = transform.position;
@@ -331,7 +325,6 @@ public class PlayerController : MonoBehaviour
 
     void PlaySound(AudioClip audioClip)
     {
-        Debug.Log(audioClip.name);
         audioSource.PlayOneShot(audioClip);
     }
 }

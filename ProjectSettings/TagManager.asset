@@ -12,6 +12,7 @@ TagManager:
   - Enemy
   - Item
   - Food
+  - Pet
   layers:
   - Default
   - TransparentFX
