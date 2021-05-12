@@ -1270,6 +1270,27 @@ Transform:
   m_Father: {fileID: 569042281}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &421497905 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1920034293508095732, guid: d4ed40e7d0de7d14b8625b3d870d30eb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1920034291904211212}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &421497906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 421497905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2982f8685034a624ba762733e71adcf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemType: food
+  particleSystem: {fileID: 19800000, guid: aa3fed151f536ee49b583c6a3ac4a2e1, type: 3}
+  obteinedSfx: {fileID: 8300000, guid: dca3084cb66e8824bab682c584bec504, type: 3}
 --- !u!1 &447429887
 GameObject:
   m_ObjectHideFlags: 0
@@ -3272,7 +3293,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.75119615, y: 1}
+    m_SensorSize: {x: 1.5311005, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -5070,6 +5091,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3bb527e673a2caa45a2de311024c638e, type: 3}
+--- !u!1 &1879130465 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2613627556368347180, guid: 4d1960c16461967478042655e03fe2b1,
+    type: 3}
+  m_PrefabInstance: {fileID: 690053782815856043}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1879130466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1879130465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2982f8685034a624ba762733e71adcf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemType: water
+  particleSystem: {fileID: 19800000, guid: aa3fed151f536ee49b583c6a3ac4a2e1, type: 3}
+  obteinedSfx: {fileID: 8300000, guid: dca3084cb66e8824bab682c584bec504, type: 3}
 --- !u!1 &1893637739
 GameObject:
   m_ObjectHideFlags: 0
@@ -5996,7 +6038,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Water
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2613627556368347183, guid: 4d1960c16461967478042655e03fe2b1, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4d1960c16461967478042655e03fe2b1, type: 3}
 --- !u!33 &842611941386756897
 MeshFilter:
@@ -6246,7 +6289,8 @@ PrefabInstance:
       propertyPath: ItemType
       value: food
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1920034293508095735, guid: d4ed40e7d0de7d14b8625b3d870d30eb, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d4ed40e7d0de7d14b8625b3d870d30eb, type: 3}
 --- !u!1 &2221477602429037176
 GameObject:
