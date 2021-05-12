@@ -9,7 +9,6 @@ public class Power : MonoBehaviour
     // Update is called once per frame
     void OnTriggerStay(Collider other)
     {
-        Debug.Log(other.gameObject.tag);
         if (other.gameObject.transform.parent != null)
         {
             if (other.gameObject.transform.parent.gameObject.CompareTag("Enemy"))

@@ -57,6 +57,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float _rotateSpeed = 5f;
     public static bool canAction = true;
+    
+    public AudioClip[] audioClips;
 
     AudioSource audioSource;
     // Start is called before the first frame update
@@ -264,6 +266,9 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Q))
         {
+            if(Input.GetKeyDown(KeyCode.Q)){
+                PlaySound(audioClips[0]);
+            }
             isDefending = true;
             shieldCollider.isTrigger = false;
         }

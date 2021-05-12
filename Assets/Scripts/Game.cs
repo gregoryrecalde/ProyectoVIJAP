@@ -17,10 +17,6 @@ public class Game : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
     // Update is called once per frame
-    void Update()
-    {
-        if (state == 2) Debug.Log("GameOver xd");
-    }
     public static void PlaySound(AudioClip audioClip)
     {
         audioSource.PlayOneShot(audioClip);
@@ -28,7 +24,6 @@ public class Game : MonoBehaviour
     public static void GameOver()
     {
         state = 2;
-        Debug.Log("GameOver");
     }
 
     public void Use(string itemName)

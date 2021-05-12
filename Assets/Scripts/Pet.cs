@@ -26,7 +26,6 @@ public class Pet : MonoBehaviour
         {
             animator.Play("Walk");
             transform.Translate(-Vector3.forward * Time.deltaTime, Space.World);
-            Debug.Log("transform.position.z " + transform.position.z);
             if (!petObteined)
             {
                 Game.pets++;

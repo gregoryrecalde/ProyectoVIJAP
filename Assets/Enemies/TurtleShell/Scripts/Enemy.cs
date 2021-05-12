@@ -28,12 +28,15 @@ public class Enemy : MonoBehaviour
     public float attackDistance = 2;
     public float minFollowDistance = 2;
     public float maxFollowDistance = 2;
+    public AudioClip[] audioClip;
+    AudioSource audioSource;
     void Start()
     {
         animator = GetComponent<Animator>();
         enemyProperties = GetComponent<EnemyProperties>();
         lifeBar.maxValue = enemyProperties.GetLife();
         lifeBar.value = enemyProperties.GetLife();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Vision()
@@ -41,13 +44,12 @@ public class Enemy : MonoBehaviour
         playerHitDetect = Physics.BoxCast(playerCheck.position, playerCheck.transform.localScale, playerCheck.transform.forward, out playerHit, playerCheck.rotation, playerHitMaxDistance);
         if (playerHitDetect)
         {
-            if (playerHit.collider.tag == "Player")
+            if (playerHit.collider.tag == "Player" )
             {
                 isAlert = true;
                 Vector3 playerPosition = playerHit.point;
                 float currentDistance = Mathf.Abs(transform.position.x - playerPosition.x);
 
-                Debug.Log("CurrentDistance: " + currentDistance + " | minFollowDistance: " + minFollowDistance + " | maxFollowDistance: " + maxFollowDistance);
                 if (currentDistance > minFollowDistance && currentDistance <= maxFollowDistance)
                 {
                     transform.Translate(transform.right * Time.deltaTime);
@@ -159,6 +161,7 @@ public class Enemy : MonoBehaviour
         {
             if (other.gameObject.CompareTag("Player"))
             {
+                PlaySound(audioClip[0]);
                 PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
                 if (playerController != null && !playerController.isDied)
                 {
@@ -196,8 +199,7 @@ public class Enemy : MonoBehaviour
         if (!die)
         {
             Vision();
-            Debug.Log("ATTACK1 " + attack1);
-            if (attack1) animator.Play("Attack01");
+            if (attack1 && !target.GetComponent<PlayerController>().isDied) animator.Play("Attack01");
             else if (ShellTrigger()) animator.Play("ShellAttack");
 
             if (enemyProperties.GetLife() <= 0)
@@ -210,5 +212,9 @@ public class Enemy : MonoBehaviour
 
         }
 
+    }
+    void PlaySound(AudioClip audioClip)
+    {
+        audioSource.PlayOneShot(audioClip);
     }
 }
