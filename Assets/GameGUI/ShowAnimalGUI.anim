@@ -22,7 +22,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -100
+        value: -138
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -78,7 +78,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -100
+        value: -138
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -95,4 +95,12 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0
+    functionName: PlaySoundtrack
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: 718fe8c6277184a01bed0b783b53802e,
+      type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

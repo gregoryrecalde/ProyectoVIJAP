@@ -12,6 +12,7 @@ public class Game : MonoBehaviour
     public static Pet currentPet;
 
     public static AudioSource audioSource;
+    public AudioClip[] itemsSfx;
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -39,6 +40,7 @@ public class Game : MonoBehaviour
                         food--;
                         currentPet.foodRequired--;
                         currentPet.PlayEffect(itemName);
+                        PlaySound(itemsSfx[0]);
                     }
                     break;
                 case "water":
@@ -47,6 +49,8 @@ public class Game : MonoBehaviour
                         water--;
                         currentPet.waterRequired--;
                         currentPet.PlayEffect(itemName);
+                        
+                        PlaySound(itemsSfx[1]);
                     }
                     break;
                 case "love":
@@ -54,6 +58,8 @@ public class Game : MonoBehaviour
                     {
                         currentPet.loveRequired--;
                         currentPet.PlayEffect(itemName);
+                        
+                        PlaySound(itemsSfx[2]);
                     }
                     break;
                 case "shower":
@@ -61,6 +67,8 @@ public class Game : MonoBehaviour
                     {
                         currentPet.showerRequired--;
                         currentPet.PlayEffect(itemName);
+                        
+                        PlaySound(itemsSfx[3]);
                     }
                     break;
                 default: break;

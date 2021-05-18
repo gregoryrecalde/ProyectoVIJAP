@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public bool groundedPlayer;
     public float playerSpeed = 5.0f;
 
+
     float currentPlayerSpeed = 0;
     bool isRun = false;
     public float jumpHeight = 2.5f;
@@ -230,6 +231,7 @@ public class PlayerController : MonoBehaviour
             // Changes the height position of the player..
             if (Input.GetButtonDown("Jump") && groundedPlayer && canAction)
             {
+                PlaySound(audioClips[1]);
                 playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
             }
 
@@ -240,6 +242,11 @@ public class PlayerController : MonoBehaviour
             animator.SetFloat("VelocityY", controller.velocity.y);
             if (canAction) Actions();
             CheckHealth();
+        }
+        else{
+            playerVelocity.y += gravityValue * Time.deltaTime;
+
+            controller.Move(playerVelocity * Time.deltaTime);
         }
         if (Input.GetKeyDown(KeyCode.R) && !isDieRecovering && canAction) Respawn();
 
@@ -264,36 +271,31 @@ public class PlayerController : MonoBehaviour
     }
     void Actions()
     {
-        if (Input.GetKey(KeyCode.Q))
+        if (Input.GetKey(KeyCode.Z))
         {
-            if(Input.GetKeyDown(KeyCode.Q)){
+            if(Input.GetKeyDown(KeyCode.Z)){
                 PlaySound(audioClips[0]);
             }
             isDefending = true;
-            shieldCollider.isTrigger = false;
         }
-        else
-        {
-            shieldCollider.isTrigger = true;
-            isDefending = false;
-        }
+        else isDefending = false;
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            isRun = true;
+            isRun = false;
         }
         else
         {
-            isRun = false;
+            isRun = true;
         }
 
         animator.SetBool("IsDefending", isDefending);
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             animator.Play("Attack01");
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        else if (Input.GetKeyDown(KeyCode.V))
         {
             animator.Play("Attack02");
         }
@@ -332,4 +334,5 @@ public class PlayerController : MonoBehaviour
     {
         audioSource.PlayOneShot(audioClip);
     }
+    
 }

@@ -25,6 +25,8 @@ public class Enemy : MonoBehaviour
     public float playerHitMaxDistance = 5;
     RaycastHit playerHit;
 
+    public float speedRotation= 5;
+
     public float attackDistance = 2;
     public float minFollowDistance = 2;
     public float maxFollowDistance = 2;
@@ -46,13 +48,15 @@ public class Enemy : MonoBehaviour
         {
             if (playerHit.collider.tag == "Player" )
             {
+                Debug.Log("Player in front");
                 isAlert = true;
                 Vector3 playerPosition = playerHit.point;
                 float currentDistance = Mathf.Abs(transform.position.x - playerPosition.x);
 
                 if (currentDistance > minFollowDistance && currentDistance <= maxFollowDistance)
                 {
-                    transform.Translate(transform.right * Time.deltaTime);
+                    
+                    transform.Translate(transform.right * Time.deltaTime * -transform.forward.x);
                 }
                 if (currentDistance <= attackDistance)
                 {
@@ -71,13 +75,37 @@ public class Enemy : MonoBehaviour
                 isAlert = false;
                 attack1 = false;
             }
+            return;
         }
-        else
+
+        else 
         {
+            playerHitDetect = Physics.BoxCast(playerCheck.position, playerCheck.transform.localScale, -playerCheck.transform.forward, out playerHit, playerCheck.rotation, playerHitMaxDistance);
             target = null;
             isAlert = false;
             attack1 = false;
+            if (playerHitDetect)
+            {
+                if (playerHit.collider.tag == "Player" )
+                {
+                    if(transform.forward.x <= 0f)
+                    {
+                        
+                        Debug.Log("Derecha "+transform.forward.x);
+                        Quaternion newRotation = Quaternion.AngleAxis(90, Vector3.up);
+                        transform.rotation= Quaternion.Slerp(transform.rotation, newRotation, speedRotation);        
+                    }
+                    else{
+                        
+                        Debug.Log("Izquierda "+transform.forward.x);
+                        Quaternion newRotation = Quaternion.AngleAxis(-90, Vector3.up);
+                        transform.rotation= Quaternion.Slerp(transform.rotation, newRotation, speedRotation);       
+                    }
+                }
+            }
         }
+       
+        
     }
     void DrawPlayerCast()
     {
@@ -163,13 +191,27 @@ public class Enemy : MonoBehaviour
             {
                 PlaySound(audioClip[0]);
                 PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
-                if (playerController != null && !playerController.isDied)
+                if (playerController != null)
                 {
-                    playerController.GetHit(damageAmount);
-                    Vector3 damageEffectPosition = playerController.gameObject.transform.position;
-                    damageEffectPosition.z -= 1f;
-                    damageEffectPosition.y += playerController.controller.height / 2;
-                    Instantiate(damageEffect, damageEffectPosition, Quaternion.identity);
+                    bool playerIsDefending = false;
+                    if((target.transform.forward.x<=0 && transform.forward.x <= 0) ||
+                        (target.transform.forward.x>=0 && transform.forward.x >= 0))
+                    {
+                        playerIsDefending = false;
+                    }
+                    else if(playerController.isDefending)
+                    {
+                        playerIsDefending = playerController.isDefending;
+                    }
+                    if(!playerController.isDied && !playerIsDefending)
+                    {
+                        playerController.GetHit(damageAmount);
+                        Vector3 damageEffectPosition = playerController.gameObject.transform.position;
+                        damageEffectPosition.z -= 1f;
+                        damageEffectPosition.y += playerController.controller.height / 2;
+                        Instantiate(damageEffect, damageEffectPosition, Quaternion.identity);
+                        //Game.PlaySound("effect"); // hitOnShield Effect
+                    }
                 }
             }
         }
@@ -199,14 +241,22 @@ public class Enemy : MonoBehaviour
         if (!die)
         {
             Vision();
-            if (attack1 && !target.GetComponent<PlayerController>().isDied) animator.Play("Attack01");
+            if(attack1)
+            {
+                if(target!=null)
+                {   
+                    if (!target.GetComponent<PlayerController>().isDied) animator.Play("Attack01");
+                    
+                }
+            }
             else if (ShellTrigger()) animator.Play("ShellAttack");
-
+            
             if (enemyProperties.GetLife() <= 0)
             {
                 die = true;
                 animator.Play("Die");
             }
+            lifeBar.transform.localScale = new Vector3(-transform.forward.x,1,1);
             lifeBar.value = enemyProperties.GetLife();
             animator.SetBool("IsAlert", isAlert);
 
