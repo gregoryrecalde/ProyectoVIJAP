@@ -69,7 +69,7 @@ public class SlimeEnemy : MonoBehaviour
 
                     transform.Translate(transform.right * Time.deltaTime * -transform.forward.x);
                 }
-                Debug.Log(currentDistance +"  /   " +attackDistance + "  /   " + attackDistance2 + "  /   " + attack2);
+                
                 if( currentDistance > attackDistance && currentDistance <= attackDistance2){
                     
                     target = playerHit.transform.gameObject;
@@ -111,14 +111,14 @@ public class SlimeEnemy : MonoBehaviour
                     if (transform.forward.x <= 0f)
                     {
 
-                        Debug.Log("Derecha " + transform.forward.x);
+                      
                         Quaternion newRotation = Quaternion.AngleAxis(90, Vector3.up);
                         transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, speedRotation);
                     }
                     else
                     {
 
-                        Debug.Log("Izquierda " + transform.forward.x);
+                
                         Quaternion newRotation = Quaternion.AngleAxis(-90, Vector3.up);
                         transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, speedRotation);
                     }

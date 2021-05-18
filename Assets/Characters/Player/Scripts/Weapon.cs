@@ -23,6 +23,9 @@ public class Weapon : MonoBehaviour
                 {
                     enemyProperties = other.gameObject.transform.parent.gameObject.GetComponent<EnemyProperties>();
                 }
+                if (enemyProperties == null){
+                    enemyProperties = other.gameObject.transform.parent.transform.parent.gameObject.GetComponent<EnemyProperties>();
+                }
                 if (enemyProperties != null)
                 {
                     enemyProperties.SetLife(-damage);

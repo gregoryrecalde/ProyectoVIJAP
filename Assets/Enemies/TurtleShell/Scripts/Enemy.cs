@@ -90,14 +90,14 @@ public class Enemy : MonoBehaviour
                     if (transform.forward.x <= 0f)
                     {
 
-                        Debug.Log("Derecha " + transform.forward.x);
+                        
                         Quaternion newRotation = Quaternion.AngleAxis(90, Vector3.up);
                         transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, speedRotation);
                     }
                     else
                     {
 
-                        Debug.Log("Izquierda " + transform.forward.x);
+                        
                         Quaternion newRotation = Quaternion.AngleAxis(-90, Vector3.up);
                         transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, speedRotation);
                     }
