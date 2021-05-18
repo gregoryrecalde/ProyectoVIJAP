@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Enemy : MonoBehaviour
+public class SlimeEnemy : MonoBehaviour
 {
 
     EnemyProperties enemyProperties;
@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour
 
     bool attack1 = false;
 
+    // Variables para detectar al player
     public Transform playerCheck;
     bool playerHitDetect = false;
     public float playerHitMaxDistance = 5;
@@ -30,6 +31,15 @@ public class Enemy : MonoBehaviour
     public float attackDistance = 2;
     public float minFollowDistance = 2;
     public float maxFollowDistance = 2;
+
+
+    //Variables del ataque
+    public ParticleSystem damageEffect;
+    public Transform damageZone;
+
+    public float damageAmount = 25;
+    public float areaDamage = 1;
+
     public AudioClip[] audioClip;
     AudioSource audioSource;
     void Start()
@@ -109,7 +119,7 @@ public class Enemy : MonoBehaviour
     }
     void DrawPlayerCast()
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.green;
 
         //Check if there has been a hit yet
         if (playerHitDetect)
@@ -134,54 +144,7 @@ public class Enemy : MonoBehaviour
         Instantiate(particleSystem, transform.position, Quaternion.identity);
         Destroy(gameObject, 1f);
     }
-    // Update is called once per frame
 
-    // Update is called once per frame
-
-    public ParticleSystem shellAttackEffect;
-    public Transform shellAttackZone;
-
-    public float shellAttackDamageAmount = 25;
-    public float shellAttackArea = 1;
-    public void ShellAttack()
-    {
-        Collider[] hitColliders = Physics.OverlapSphere(shellAttackZone.transform.position, shellAttackArea);
-        foreach (var other in hitColliders)
-        {
-            if (other.gameObject.CompareTag("Player"))
-            {
-                PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
-                if (playerController != null && !playerController.isDied)
-                {
-                    playerController.GetHit(shellAttackDamageAmount);
-                    Vector3 shellAttackEffectPosition = playerController.gameObject.transform.position;
-                    shellAttackEffectPosition.z -= 1f;
-                    shellAttackEffectPosition.y += playerController.controller.height / 2;
-                    Instantiate(damageEffect, shellAttackEffectPosition, Quaternion.identity);
-                }
-            }
-        }
-
-    }
-
-    bool ShellTrigger()
-    {
-        Collider[] hitColliders = Physics.OverlapSphere(shellAttackZone.transform.position, shellAttackArea);
-        foreach (var other in hitColliders)
-        {
-            if (other.gameObject.CompareTag("Player"))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public ParticleSystem damageEffect;
-    public Transform damageZone;
-
-    public float damageAmount = 25;
-    public float areaDamage = 1;
     public void Attack()
     {
         Collider[] hitColliders = Physics.OverlapSphere(damageZone.transform.position, areaDamage);
@@ -225,15 +188,9 @@ public class Enemy : MonoBehaviour
 
     }
 
-    void DebugShellTrigger()
-    {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(shellAttackZone.position, shellAttackArea);
-    }
     void OnDrawGizmos()
     {
         DebugAttack();
-        DebugShellTrigger();
         DrawPlayerCast();
     }
     void Update()
@@ -249,7 +206,17 @@ public class Enemy : MonoBehaviour
 
                 }
             }
-            else if (ShellTrigger()) animator.Play("ShellAttack");
+            /* else if (attack2)
+            {
+                if (target != null)
+                {
+                    if (!target.GetComponent<PlayerController>().isDied) animator.Play("Attack02");
+
+                }
+            }
+
+            */
+            //else if (ShellTrigger()) animator.Play("ShellAttack");
 
             if (enemyProperties.GetLife() <= 0)
             {
