@@ -151,7 +151,7 @@ public class Enemy : MonoBehaviour
             if (other.gameObject.CompareTag("Player"))
             {
                 PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
-                if (playerController != null && !playerController.isDied)
+                if (playerController != null && !playerController.isDied && target != null)
                 {
                     playerController.GetHit(shellAttackDamageAmount);
                     Vector3 shellAttackEffectPosition = playerController.gameObject.transform.position;
@@ -191,7 +191,7 @@ public class Enemy : MonoBehaviour
             {
                 PlaySound(audioClip[0]);
                 PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
-                if (playerController != null)
+                if (playerController != null && target != null)
                 {
                     bool playerIsDefending = false;
                     if ((target.transform.forward.x <= 0 && transform.forward.x <= 0) ||

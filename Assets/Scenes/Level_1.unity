@@ -1351,6 +1351,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2982f8685034a624ba762733e71adcf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ItemType: food
+  particleSystem: {fileID: 19800000, guid: aa3fed151f536ee49b583c6a3ac4a2e1, type: 3}
+  obteinedSfx: {fileID: 8300000, guid: 311ed1f1bf2aa1847b8f10462f75982f, type: 3}
 --- !u!1 &447429887
 GameObject:
   m_ObjectHideFlags: 0
@@ -2438,7 +2441,7 @@ MonoBehaviour:
   maxFollowDistance: 6
   damageEffect: {fileID: 19800004, guid: fb7b0526ade434043b350a180d741cf3, type: 3}
   damageZone: {fileID: 897703881}
-  damageAmount: 25
+  damageAmount: 10
   areaDamage: 1
   audioClip:
   - {fileID: 8300000, guid: a1a5756b7453e0a4c962f48939c06ba2, type: 3}
@@ -4588,7 +4591,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7757353, y: 1}
+    m_SensorSize: {x: 1.7792553, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -5843,6 +5846,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1463649340635624, guid: 55776efecb0cd134ea5f418c2f97a705, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 1919012471076396, guid: 55776efecb0cd134ea5f418c2f97a705, type: 3}
       propertyPath: m_Name
       value: SlimePBR
@@ -7243,6 +7250,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2982f8685034a624ba762733e71adcf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ItemType: water
+  particleSystem: {fileID: 19800000, guid: aa3fed151f536ee49b583c6a3ac4a2e1, type: 3}
+  obteinedSfx: {fileID: 8300000, guid: 311ed1f1bf2aa1847b8f10462f75982f, type: 3}
 --- !u!1 &1893637739
 GameObject:
   m_ObjectHideFlags: 0
@@ -8685,7 +8695,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Water
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2613627556368347183, guid: 4d1960c16461967478042655e03fe2b1, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4d1960c16461967478042655e03fe2b1, type: 3}
 --- !u!1 &729690221843594789
 GameObject:
@@ -9178,7 +9189,8 @@ PrefabInstance:
       propertyPath: ItemType
       value: food
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1920034293508095735, guid: d4ed40e7d0de7d14b8625b3d870d30eb, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d4ed40e7d0de7d14b8625b3d870d30eb, type: 3}
 --- !u!4 &2036781202591140761
 Transform:

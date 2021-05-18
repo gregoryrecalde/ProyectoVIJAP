@@ -19,6 +19,7 @@ public class SlimeEnemy : MonoBehaviour
     public Slider lifeBar;
 
     bool attack1 = false;
+    bool attack2 = false;
 
     // Variables para detectar al player
     public Transform playerCheck;
@@ -29,6 +30,7 @@ public class SlimeEnemy : MonoBehaviour
     public float speedRotation = 5;
 
     public float attackDistance = 2;
+    public float attackDistance2 = 4;
     public float minFollowDistance = 2;
     public float maxFollowDistance = 2;
 
@@ -67,7 +69,13 @@ public class SlimeEnemy : MonoBehaviour
 
                     transform.Translate(transform.right * Time.deltaTime * -transform.forward.x);
                 }
-                if (currentDistance <= attackDistance)
+                Debug.Log(currentDistance +"  /   " +attackDistance + "  /   " + attackDistance2 + "  /   " + attack2);
+                if( currentDistance > attackDistance && currentDistance <= attackDistance2){
+                    
+                    target = playerHit.transform.gameObject;
+                    attack2 = true;
+                }
+                else if (currentDistance <= attackDistance)
                 {
                     target = playerHit.transform.gameObject;
                     attack1 = true;
@@ -76,6 +84,7 @@ public class SlimeEnemy : MonoBehaviour
                 {
                     target = null;
                     attack1 = false;
+                    attack2 = false;
                 }
             }
             else
@@ -83,6 +92,7 @@ public class SlimeEnemy : MonoBehaviour
                 target = null;
                 isAlert = false;
                 attack1 = false;
+                attack2 = false;
             }
             return;
         }
@@ -93,6 +103,7 @@ public class SlimeEnemy : MonoBehaviour
             target = null;
             isAlert = false;
             attack1 = false;
+            attack2 = false;
             if (playerHitDetect)
             {
                 if (playerHit.collider.tag == "Player")
@@ -139,7 +150,7 @@ public class SlimeEnemy : MonoBehaviour
             Gizmos.DrawWireCube(playerCheck.position + playerCheck.transform.forward * playerHitMaxDistance, playerCheck.transform.localScale);
         }
     }
-    void Effect()
+    void DieEffect()
     {
         Instantiate(particleSystem, transform.position, Quaternion.identity);
         Destroy(gameObject, 1f);
@@ -154,7 +165,7 @@ public class SlimeEnemy : MonoBehaviour
             {
                 PlaySound(audioClip[0]);
                 PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
-                if (playerController != null)
+                if (playerController != null && target != null)
                 {
                     bool playerIsDefending = false;
                     if ((target.transform.forward.x <= 0 && transform.forward.x <= 0) ||
@@ -206,7 +217,7 @@ public class SlimeEnemy : MonoBehaviour
 
                 }
             }
-            /* else if (attack2)
+             else if (attack2)
             {
                 if (target != null)
                 {
@@ -215,8 +226,8 @@ public class SlimeEnemy : MonoBehaviour
                 }
             }
 
-            */
-            //else if (ShellTrigger()) animator.Play("ShellAttack");
+            
+            
 
             if (enemyProperties.GetLife() <= 0)
             {
