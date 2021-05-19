@@ -69,8 +69,9 @@ public class ChestEnemy : MonoBehaviour
 
                     transform.Translate(transform.right * Time.deltaTime * -transform.forward.x);
                 }
-                if( currentDistance > attackDistance && currentDistance <= attackDistance2){
-                    
+                if (currentDistance > attackDistance && currentDistance <= attackDistance2)
+                {
+
                     target = playerHit.transform.gameObject;
                     attack2 = true;
                 }
@@ -85,6 +86,7 @@ public class ChestEnemy : MonoBehaviour
                     attack1 = false;
                     attack2 = false;
                 }
+                return;
             }
             else
             {
@@ -93,7 +95,6 @@ public class ChestEnemy : MonoBehaviour
                 attack1 = false;
                 attack2 = false;
             }
-            return;
         }
 
         else
@@ -163,7 +164,7 @@ public class ChestEnemy : MonoBehaviour
             {
                 PlaySound(audioClip[0]);
                 PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
-                Debug.Log("Player controller "+playerController);
+                Debug.Log("Player controller " + playerController);
                 if (playerController != null && target != null)
                 {
                     bool playerIsDefending = false;
@@ -216,7 +217,7 @@ public class ChestEnemy : MonoBehaviour
 
                 }
             }
-             else if (attack2)
+            else if (attack2)
             {
                 if (target != null)
                 {
@@ -225,8 +226,8 @@ public class ChestEnemy : MonoBehaviour
                 }
             }
 
-            
-            
+
+
 
             if (enemyProperties.GetLife() <= 0)
             {

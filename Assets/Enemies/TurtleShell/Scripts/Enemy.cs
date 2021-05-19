@@ -67,6 +67,7 @@ public class Enemy : MonoBehaviour
                     target = null;
                     attack1 = false;
                 }
+                return;
             }
             else
             {
@@ -74,36 +75,32 @@ public class Enemy : MonoBehaviour
                 isAlert = false;
                 attack1 = false;
             }
-            return;
         }
-
-        else
+        playerHitDetect = Physics.BoxCast(playerCheck.position, playerCheck.transform.localScale, -playerCheck.transform.forward, out playerHit, playerCheck.rotation, playerHitMaxDistance);
+        target = null;
+        isAlert = false;
+        attack1 = false;
+        if (playerHitDetect)
         {
-            playerHitDetect = Physics.BoxCast(playerCheck.position, playerCheck.transform.localScale, -playerCheck.transform.forward, out playerHit, playerCheck.rotation, playerHitMaxDistance);
-            target = null;
-            isAlert = false;
-            attack1 = false;
-            if (playerHitDetect)
+            if (playerHit.collider.tag == "Player")
             {
-                if (playerHit.collider.tag == "Player")
+                if (transform.forward.x <= 0f)
                 {
-                    if (transform.forward.x <= 0f)
-                    {
 
 
-                        Quaternion newRotation = Quaternion.AngleAxis(90, Vector3.up);
-                        transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, speedRotation);
-                    }
-                    else
-                    {
+                    Quaternion newRotation = Quaternion.AngleAxis(90, Vector3.up);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, speedRotation);
+                }
+                else
+                {
 
 
-                        Quaternion newRotation = Quaternion.AngleAxis(-90, Vector3.up);
-                        transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, speedRotation);
-                    }
+                    Quaternion newRotation = Quaternion.AngleAxis(-90, Vector3.up);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, speedRotation);
                 }
             }
         }
+
 
 
     }

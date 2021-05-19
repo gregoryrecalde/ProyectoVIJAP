@@ -69,9 +69,10 @@ public class SlimeEnemy : MonoBehaviour
 
                     transform.Translate(transform.right * Time.deltaTime * -transform.forward.x);
                 }
-                
-                if( currentDistance > attackDistance && currentDistance <= attackDistance2){
-                    
+
+                if (currentDistance > attackDistance && currentDistance <= attackDistance2)
+                {
+
                     target = playerHit.transform.gameObject;
                     attack2 = true;
                 }
@@ -86,6 +87,7 @@ public class SlimeEnemy : MonoBehaviour
                     attack1 = false;
                     attack2 = false;
                 }
+                return;
             }
             else
             {
@@ -94,7 +96,6 @@ public class SlimeEnemy : MonoBehaviour
                 attack1 = false;
                 attack2 = false;
             }
-            return;
         }
 
         else
@@ -111,14 +112,14 @@ public class SlimeEnemy : MonoBehaviour
                     if (transform.forward.x <= 0f)
                     {
 
-                      
+
                         Quaternion newRotation = Quaternion.AngleAxis(90, Vector3.up);
                         transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, speedRotation);
                     }
                     else
                     {
 
-                
+
                         Quaternion newRotation = Quaternion.AngleAxis(-90, Vector3.up);
                         transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, speedRotation);
                     }
@@ -217,7 +218,7 @@ public class SlimeEnemy : MonoBehaviour
 
                 }
             }
-             else if (attack2)
+            else if (attack2)
             {
                 if (target != null)
                 {
@@ -226,8 +227,8 @@ public class SlimeEnemy : MonoBehaviour
                 }
             }
 
-            
-            
+
+
 
             if (enemyProperties.GetLife() <= 0)
             {
