@@ -90,14 +90,14 @@ public class Enemy : MonoBehaviour
                     if (transform.forward.x <= 0f)
                     {
 
-                        
+
                         Quaternion newRotation = Quaternion.AngleAxis(90, Vector3.up);
                         transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, speedRotation);
                     }
                     else
                     {
 
-                        
+
                         Quaternion newRotation = Quaternion.AngleAxis(-90, Vector3.up);
                         transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, speedRotation);
                     }
@@ -151,7 +151,7 @@ public class Enemy : MonoBehaviour
             if (other.gameObject.CompareTag("Player"))
             {
                 PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
-                if (playerController != null && !playerController.isDied && target != null)
+                if (playerController != null && !playerController.isDied)
                 {
                     playerController.GetHit(shellAttackDamageAmount);
                     Vector3 shellAttackEffectPosition = playerController.gameObject.transform.position;

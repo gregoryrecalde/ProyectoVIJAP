@@ -4,28 +4,49 @@ using UnityEngine;
 
 public class Game : MonoBehaviour
 {
-    public static int state = 0; // 0 pause, 1 start, 2 gameover
-    public static int food = 4;
-    public static int water = 5;
+    public static int state = 0; // 0 pause, 1 start, 2 win
+    public static int food = 0;
+    public static int water = 0;
     public static int pets = 0;
 
+    public Animator canvasAnimator;
     public static Pet currentPet;
 
     public static AudioSource audioSource;
     public AudioClip[] itemsSfx;
+    int currentLevel;
+    string levelIdentifier = "Level_";
+    public static int goalLevel = 0;
+
+    GameObject level;
     void Start()
     {
+        currentLevel = PlayerPrefs.GetInt(levelIdentifier, 1);
+        currentLevel = 1;
         audioSource = GetComponent<AudioSource>();
     }
-    // Update is called once per frame
+
+    void Update()
+    {
+        if (pets >= goalLevel && state != 2)
+        {
+            state = 2;
+            Debug.Log("Level Complete " + currentLevel);
+            currentLevel++;
+            PlayerPrefs.SetInt("Level_", currentLevel);
+            canvasAnimator.SetTrigger("Win");
+        }
+    }
+
+    public void NextLevel()
+    {
+        SceneController.LoadLevel(currentLevel);
+    }
     public static void PlaySound(AudioClip audioClip)
     {
         audioSource.PlayOneShot(audioClip);
     }
-    public static void GameOver()
-    {
-        state = 2;
-    }
+
 
     public void Use(string itemName)
     {
@@ -49,7 +70,7 @@ public class Game : MonoBehaviour
                         water--;
                         currentPet.waterRequired--;
                         currentPet.PlayEffect(itemName);
-                        
+
                         PlaySound(itemsSfx[1]);
                     }
                     break;
@@ -58,7 +79,7 @@ public class Game : MonoBehaviour
                     {
                         currentPet.loveRequired--;
                         currentPet.PlayEffect(itemName);
-                        
+
                         PlaySound(itemsSfx[2]);
                     }
                     break;
@@ -67,12 +88,18 @@ public class Game : MonoBehaviour
                     {
                         currentPet.showerRequired--;
                         currentPet.PlayEffect(itemName);
-                        
+
                         PlaySound(itemsSfx[3]);
                     }
                     break;
                 default: break;
             }
         }
+    }
+
+    public static void IncreaseItem(string itemName)
+    {
+        if (itemName == "food") food++;
+        if (itemName == "water") water++;
     }
 }

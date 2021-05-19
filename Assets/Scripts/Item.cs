@@ -22,7 +22,7 @@ public class Item : MonoBehaviour
             animator.Play("ItemObteined");
             Game.PlaySound(obteinedSfx);
             isObteined = true;
-            Game.food++;
+            Game.IncreaseItem(ItemType);
         }
     }
 

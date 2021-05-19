@@ -1,17 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-public class SceneController : MonoBehaviour
+public class MenuController : MonoBehaviour
 {
     Animator animator;
+    public string levelIdentifier = "Level_";
     void Start()
     {
         animator = GetComponent<Animator>();
     }
-    public void LoadScene(string sceneName)
+    public void Play()
     {
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        SceneController.LoadLevel(PlayerPrefs.GetInt(levelIdentifier, 1));
     }
 
     public void SetAnimatorTrigger(string triggerName)

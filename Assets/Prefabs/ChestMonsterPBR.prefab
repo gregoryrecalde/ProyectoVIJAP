@@ -806,7 +806,7 @@ MonoBehaviour:
   speedRotation: 5
   attackDistance: 2
   attackDistance2: 4
-  minFollowDistance: 5
+  minFollowDistance: 1
   maxFollowDistance: 6
   damageEffect: {fileID: 19800004, guid: fb7b0526ade434043b350a180d741cf3, type: 3}
   damageZone: {fileID: 6302866247378313649}

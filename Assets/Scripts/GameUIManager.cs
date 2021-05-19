@@ -7,18 +7,13 @@ public class GameUIManager : MonoBehaviour
     public TextMeshProUGUI foodTxt;
     public TextMeshProUGUI waterTxt;
     public static Animator animator;
-    public AudioSource audioSource;
 
+    public AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-    }
 
-    public void PlaySoundtrack(AudioClip audioClip)
-    {
-        audioSource.clip = audioClip;
-        audioSource.Play();
     }
 
     public static void ShowAnimalGUI()
@@ -28,6 +23,13 @@ public class GameUIManager : MonoBehaviour
     public static void HideAnimalGUI()
     {
         animator.SetBool("ShowAnimalGUI", false);
+    }
+
+
+    public void PlaySoundtrack(AudioClip audioClip)
+    {
+        audioSource.clip = audioClip;
+        audioSource.Play();
     }
 
 

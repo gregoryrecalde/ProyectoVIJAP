@@ -4,30 +4,84 @@ using UnityEngine;
 
 public class Pet : MonoBehaviour
 {
-    public int foodRequired = 3;
-    public int waterRequired = 3;
-    public int loveRequired = 3;
-    public int showerRequired = 3;
+    public int foodRequired = 0;
+    public int waterRequired = 0;
+    public int loveRequired = 0;
+    public int showerRequired = 0;
+
+    public bool onAir;
     Animator animator;
     public ParticleSystem bubbleEffect;
     public ParticleSystem happyEffect;
     public ParticleSystem loveEffect;
     public ParticleSystem waterEffect;
 
+    public GameObject waterSprite;
+
+    public GameObject loveSprite;
+
+    public GameObject foodSprite;
+
+    public GameObject showerSprite;
+
     bool petObteined = false;
+
+    public Color[] bodyColor;
+    public Color[] necklaceColor;
+
+    public GameObject catMesh;
+
+    public BoxCollider boxCollider;
+
+    public bool setRandomRequirements = true;
     void Start()
     {
         animator = GetComponent<Animator>();
+        if (setRandomRequirements) RandomRequirements();
+        RandomColors();
+        Game.goalLevel++;
+    }
+
+    void RandomColors()
+    {
+        SkinnedMeshRenderer mesh = catMesh.GetComponent<SkinnedMeshRenderer>();
+        foreach (Material material in mesh.materials)
+        {
+            if (material.name == "bodyCat (Instance)") material.SetColor("_BaseColor", bodyColor[Random.Range(0, bodyColor.Length)]);
+            else if (material.name == "necklace (Instance)") material.SetColor("_BaseColor", necklaceColor[Random.Range(0, necklaceColor.Length)]);
+        }
+    }
+
+    void RandomRequirements()
+    {
+        foodRequired = Random.Range(1, 2);
+        waterRequired = Random.Range(1, 2);
+        loveRequired = Random.Range(1, 2);
+        showerRequired = Random.Range(1, 2);
     }
 
     void Update()
     {
+
+        if (loveRequired <= 0) loveSprite.SetActive(false);
+
+        if (showerRequired <= 0) showerSprite.SetActive(false);
+
+        if (foodRequired <= 0) foodSprite.SetActive(false);
+
+        if (waterRequired <= 0) waterSprite.SetActive(false);
+
         if (FoodFull() && LoveFull() && WaterFull() && ShowerFull())
         {
             animator.Play("Walk");
             transform.Translate(-Vector3.forward * Time.deltaTime, Space.World);
             if (!petObteined)
             {
+                if (onAir)
+                {
+                    GetComponent<Rigidbody>().isKinematic = false;
+                    boxCollider.enabled = true;
+                }
                 Game.pets++;
                 petObteined = true;
             }
