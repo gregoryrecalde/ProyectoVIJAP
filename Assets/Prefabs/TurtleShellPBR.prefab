@@ -469,6 +469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   life: 100
+  points: 2
 --- !u!82 &6140597597487684033
 AudioSource:
   m_ObjectHideFlags: 0

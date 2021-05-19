@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1920034293508095735}
   - component: {fileID: 1920034293508095734}
   - component: {fileID: 1920034293508095733}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: FoodA
   m_TagString: Food
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b077933a9669fe49bc07a7d83fddcc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foodType: 65
+  ItemType: 
   particleSystem: {fileID: 19800000, guid: aa3fed151f536ee49b583c6a3ac4a2e1, type: 3}
   obteinedSfx: {fileID: 8300000, guid: dca3084cb66e8824bab682c584bec504, type: 3}
 --- !u!95 &1920034293508095734

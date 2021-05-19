@@ -43,7 +43,7 @@ public class Enemy : MonoBehaviour
 
     void Vision()
     {
-        playerHitDetect = Physics.BoxCast(playerCheck.position, playerCheck.transform.localScale, playerCheck.transform.forward, out playerHit, playerCheck.rotation, playerHitMaxDistance);
+        playerHitDetect = Physics.BoxCast(playerCheck.position, playerCheck.transform.localScale, playerCheck.transform.forward, out playerHit, playerCheck.rotation, playerHitMaxDistance, 3);
         if (playerHitDetect)
         {
             if (playerHit.collider.tag == "Player")
@@ -128,6 +128,7 @@ public class Enemy : MonoBehaviour
     }
     void Effect()
     {
+        Game.score += enemyProperties.points;
         Instantiate(particleSystem, transform.position, Quaternion.identity);
         Destroy(gameObject, 1f);
     }

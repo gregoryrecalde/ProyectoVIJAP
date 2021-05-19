@@ -58,17 +58,25 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float _rotateSpeed = 5f;
     public static bool canAction = true;
-    
+
+    Text timeToRespawnTxt;
+
     public AudioClip[] audioClips;
 
     AudioSource audioSource;
     // Start is called before the first frame update
+
+    float timeToRespawn = 10.5f;
+    Animator canvasAnimator;
     void Start()
     {
         playerProperties = GetComponent<PlayerProperties>();
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
+        timeToRespawnTxt = GameObject.Find("timeToRespawnTxt").GetComponent<Text>();
+        canvasAnimator = GameObject.Find("Game").GetComponentInChildren<Animator>();
+
     }
 
     void OnDrawGizmos()
@@ -164,6 +172,11 @@ public class PlayerController : MonoBehaviour
         positionAux.z = 0;
         transform.position = positionAux;
 
+        if (Game.state == 2)
+        {
+            canAction = false;
+        }
+
         if (!isDied)
         {
             groundedPlayer = IsOnGround();
@@ -243,15 +256,33 @@ public class PlayerController : MonoBehaviour
             if (canAction) Actions();
             CheckHealth();
         }
-        else{
+        else
+        {
+            if (canAction)
+            {
+                timeToRespawn -= Time.deltaTime;
+                timeToRespawnTxt.text = ((int)timeToRespawn).ToString();
+                if (timeToRespawn <= 0)
+                {
+                    Game.state = 3;
+                    canAction = false;
+                    Invoke("GoToMenu", 5);
+                }
+                else timeToRespawn -= Time.deltaTime;
+            }
+
             playerVelocity.y += gravityValue * Time.deltaTime;
 
             controller.Move(playerVelocity * Time.deltaTime);
         }
-        if (Input.GetKeyDown(KeyCode.R) && !isDieRecovering && canAction) Respawn();
+        if (isDied && Input.anyKeyDown && !isDieRecovering && canAction) Respawn();
 
     }
 
+    void GoToMenu()
+    {
+        SceneController.LoadScene("MainMenu");
+    }
     public void WeaponAttack()
     {
         weapon.Attack();
@@ -266,6 +297,7 @@ public class PlayerController : MonoBehaviour
                 isDied = true;
                 animator.SetBool("IsDied", isDied);
                 animator.Play("Die");
+                canvasAnimator.SetTrigger("Die");
             }
         }
     }
@@ -273,7 +305,8 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Z))
         {
-            if(Input.GetKeyDown(KeyCode.Z)){
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
                 PlaySound(audioClips[0]);
             }
             isDefending = true;
@@ -301,10 +334,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Respawn()
+    public void Respawn()
     {
         if (!isDieRecovering)
         {
+            Game.state = 1;
+            Game.respawns++;
+            canvasAnimator.SetTrigger("Battle");
             isDied = true;
             animator.SetBool("IsDied", isDied);
             GameObject go = Instantiate(dieRecoverEffect);
@@ -321,6 +357,7 @@ public class PlayerController : MonoBehaviour
         isDieRecovering = false;
         isDied = false;
         animator.SetBool("IsDied", isDied);
+        timeToRespawn = 10.5f;
     }
 
 
@@ -334,5 +371,5 @@ public class PlayerController : MonoBehaviour
     {
         audioSource.PlayOneShot(audioClip);
     }
-    
+
 }

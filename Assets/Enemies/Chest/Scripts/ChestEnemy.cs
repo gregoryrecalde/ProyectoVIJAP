@@ -51,11 +51,13 @@ public class ChestEnemy : MonoBehaviour
         lifeBar.maxValue = enemyProperties.GetLife();
         lifeBar.value = enemyProperties.GetLife();
         audioSource = GetComponent<AudioSource>();
+
     }
 
     void Vision()
     {
-        playerHitDetect = Physics.BoxCast(playerCheck.position, playerCheck.transform.localScale, playerCheck.transform.forward, out playerHit, playerCheck.rotation, playerHitMaxDistance);
+        playerHitDetect = Physics.BoxCast(playerCheck.position, playerCheck.transform.localScale, playerCheck.transform.forward, out playerHit, playerCheck.rotation, playerHitMaxDistance, 3);
+
         if (playerHitDetect)
         {
             if (playerHit.collider.tag == "Player")
@@ -150,6 +152,7 @@ public class ChestEnemy : MonoBehaviour
     }
     void DieEffect()
     {
+        Game.score += enemyProperties.points;
         Instantiate(particleSystem, transform.position, Quaternion.identity);
         Destroy(gameObject, 1f);
     }

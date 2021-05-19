@@ -6,6 +6,8 @@ public class GameUIManager : MonoBehaviour
 {
     public TextMeshProUGUI foodTxt;
     public TextMeshProUGUI waterTxt;
+    public TextMeshProUGUI scoreTxt;
+    public TextMeshProUGUI goalTxt;
     public static Animator animator;
 
     public AudioSource audioSource;
@@ -38,5 +40,15 @@ public class GameUIManager : MonoBehaviour
     {
         foodTxt.text = "x" + Game.food;
         waterTxt.text = "x" + Game.water;
+    }
+
+    public void UpdateScore()
+    {
+        scoreTxt.text = "score: " + Game.score;
+    }
+
+    public void UpdateGoalMessage()
+    {
+        goalTxt.text = "RESCATASTE " + Game.pets + " GATITOS";
     }
 }
