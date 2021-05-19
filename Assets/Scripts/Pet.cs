@@ -54,10 +54,15 @@ public class Pet : MonoBehaviour
 
     void RandomRequirements()
     {
-        foodRequired = Random.Range(1, 2);
-        waterRequired = Random.Range(1, 2);
-        loveRequired = Random.Range(1, 2);
-        showerRequired = Random.Range(1, 2);
+        foodRequired = Random.Range(0, 2);
+        waterRequired = Random.Range(0, 2);
+        loveRequired = Random.Range(0, 2);
+        showerRequired = Random.Range(0, 2);
+
+        if (FoodFull() && LoveFull() && WaterFull() && ShowerFull())
+        {
+            waterRequired = 1;
+        }
     }
 
     void Update()

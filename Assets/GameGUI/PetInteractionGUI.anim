@@ -412,7 +412,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: get_referenceResolution
+    functionName: PlaySoundtrack
     data: 
     objectReferenceParameter: {fileID: 8300000, guid: 718fe8c6277184a01bed0b783b53802e,
       type: 3}
