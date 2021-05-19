@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -9462,7 +9462,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 1.7803279, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -11751,7 +11751,7 @@ PrefabInstance:
     - target: {fileID: 5050913546358244550, guid: 33c4e6c2fc4aafa4eb3a1e33e93439bc,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.44
+      value: 3.14
       objectReference: {fileID: 0}
     - target: {fileID: 5050913546358244550, guid: 33c4e6c2fc4aafa4eb3a1e33e93439bc,
         type: 3}
@@ -13654,7 +13654,7 @@ PrefabInstance:
     - target: {fileID: 5050913546358244550, guid: 33c4e6c2fc4aafa4eb3a1e33e93439bc,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.44
+      value: 3.136
       objectReference: {fileID: 0}
     - target: {fileID: 5050913546358244550, guid: 33c4e6c2fc4aafa4eb3a1e33e93439bc,
         type: 3}

@@ -1570,6 +1570,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ecca5d1c837f234438aff7e0a731217a, type: 3}
   - {fileID: 8300000, guid: f73e0493990271f4d8a52a7dfcfa55b1, type: 3}
   gameUIManager: {fileID: 585874147944002688}
+  currentLevel: 1
 --- !u!82 &585874147367470578
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2611,6 +2612,7 @@ MonoBehaviour:
   foodTxt: {fileID: 585874147907255907}
   waterTxt: {fileID: 585874146012720371}
   scoreTxt: {fileID: 2955440913170551203}
+  goalTxt: {fileID: 585874146914249831}
   audioSource: {fileID: 585874147367470578}
 --- !u!95 &7331101432067123486
 Animator:
