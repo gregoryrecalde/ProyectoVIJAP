@@ -29,6 +29,7 @@ public class MenuController : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(playerName.text) && !string.IsNullOrWhiteSpace(playerName.text))
         {
+            Game.score = 0;
             PlayerPrefs.SetString("player", playerName.text);
             SceneController.LoadLevel(2);
         }

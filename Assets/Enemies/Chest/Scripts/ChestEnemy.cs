@@ -209,7 +209,7 @@ public class ChestEnemy : MonoBehaviour
     }
     void Update()
     {
-        if (!die)
+        if (!die && Game.state == 1)
         {
             Vision();
             if (attack1)

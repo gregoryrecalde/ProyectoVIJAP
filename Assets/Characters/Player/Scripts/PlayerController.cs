@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     public GameObject dieRecoverEffect;
 
     public Weapon weapon;
-    public Slider lifeBar;
+    Slider lifeBar;
 
     public bool isDied = false;
     public bool isDefending = false;
@@ -68,6 +68,7 @@ public class PlayerController : MonoBehaviour
 
     float timeToRespawn = 10.5f;
     Animator canvasAnimator;
+
     void Start()
     {
         playerProperties = GetComponent<PlayerProperties>();
@@ -76,6 +77,8 @@ public class PlayerController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         timeToRespawnTxt = GameObject.Find("timeToRespawnTxt").GetComponent<Text>();
         canvasAnimator = GameObject.Find("Game").GetComponentInChildren<Animator>();
+        lifeBar = GameObject.Find("PlayerLifebar").GetComponent<Slider>();
+        canAction = true;
 
     }
 
@@ -172,11 +175,6 @@ public class PlayerController : MonoBehaviour
         positionAux.z = 0;
         transform.position = positionAux;
 
-        if (Game.state == 2)
-        {
-            canAction = false;
-        }
-
         if (!isDied)
         {
             groundedPlayer = IsOnGround();
@@ -258,24 +256,21 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (canAction)
-            {
-                timeToRespawn -= Time.deltaTime;
-                timeToRespawnTxt.text = ((int)timeToRespawn).ToString();
-                if (timeToRespawn <= 0)
-                {
-                    Game.state = 3;
-                    canAction = false;
-                    Invoke("GoToMenu", 5);
-                }
-                else timeToRespawn -= Time.deltaTime;
-            }
-
             playerVelocity.y += gravityValue * Time.deltaTime;
-
             controller.Move(playerVelocity * Time.deltaTime);
         }
-        if (isDied && Input.anyKeyDown && !isDieRecovering && canAction) Respawn();
+        if(Game.waitPlayerAnswer && isDied && Game.state!=4)
+        {
+            timeToRespawnTxt.text = ((int)timeToRespawn).ToString();
+            if (timeToRespawn <= 0)
+            {
+                Game.state = 3; // O sea mueres
+                Invoke("GoToMenu", 5);
+            }
+            else timeToRespawn -= Time.deltaTime;
+            
+            if (Input.anyKeyDown && !isDieRecovering) Respawn();
+        }
 
     }
 
@@ -294,6 +289,7 @@ public class PlayerController : MonoBehaviour
         if (playerProperties.GetLife() <= 0)
         {
             {
+                Game.waitPlayerAnswer = true;
                 isDied = true;
                 animator.SetBool("IsDied", isDied);
                 animator.Play("Die");

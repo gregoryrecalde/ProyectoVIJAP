@@ -76,30 +76,34 @@ public class Enemy : MonoBehaviour
                 attack1 = false;
             }
         }
-        playerHitDetect = Physics.BoxCast(playerCheck.position, playerCheck.transform.localScale, -playerCheck.transform.forward, out playerHit, playerCheck.rotation, playerHitMaxDistance);
-        target = null;
-        isAlert = false;
-        attack1 = false;
-        if (playerHitDetect)
+        else
         {
-            if (playerHit.collider.tag == "Player")
+            playerHitDetect = Physics.BoxCast(playerCheck.position, playerCheck.transform.localScale, -playerCheck.transform.forward, out playerHit, playerCheck.rotation, playerHitMaxDistance);
+            target = null;
+            isAlert = false;
+            attack1 = false;
+            if (playerHitDetect)
             {
-                if (transform.forward.x <= 0f)
+                if (playerHit.collider.tag == "Player")
                 {
+                    if (transform.forward.x <= 0f)
+                    {
 
 
-                    Quaternion newRotation = Quaternion.AngleAxis(90, Vector3.up);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, speedRotation);
-                }
-                else
-                {
+                        Quaternion newRotation = Quaternion.AngleAxis(90, Vector3.up);
+                        transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, speedRotation);
+                    }
+                    else
+                    {
 
 
-                    Quaternion newRotation = Quaternion.AngleAxis(-90, Vector3.up);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, speedRotation);
+                        Quaternion newRotation = Quaternion.AngleAxis(-90, Vector3.up);
+                        transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, speedRotation);
+                    }
                 }
             }
         }
+        
 
 
 
@@ -236,7 +240,7 @@ public class Enemy : MonoBehaviour
     }
     void Update()
     {
-        if (!die)
+        if (!die && Game.state == 1)
         {
             Vision();
             if (attack1)

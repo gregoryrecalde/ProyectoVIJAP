@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2703,7 +2703,7 @@ GameObject:
   m_Component:
   - component: {fileID: 318078380}
   - component: {fileID: 318078381}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Limite
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -4829,7 +4829,6 @@ MonoBehaviour:
   shieldBlockEffect: {fileID: 19800002, guid: 1ca16f2a31fb6a548ad8954bed1d321f, type: 3}
   dieRecoverEffect: {fileID: 100000, guid: ada5d62ffe762ce4fbccc70dcdbc9022, type: 3}
   weapon: {fileID: 883940974}
-  lifeBar: {fileID: 1536376432}
   isDied: 0
   isDefending: 0
   shieldCollider: {fileID: 622928741}
@@ -5435,7 +5434,7 @@ GameObject:
   m_Component:
   - component: {fileID: 645987136}
   - component: {fileID: 645987137}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Limite
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -9462,7 +9461,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7803279, y: 1}
+    m_SensorSize: {x: 1.7774566, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -11032,18 +11031,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.006350005, y: 0.00635, z: 0.127}
   m_Center: {x: 0.0000000024809208, y: 0, z: 0.0635}
---- !u!114 &1536376432 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 585874148042910846, guid: 86f26d4fd55e3e741b15f1a83be8e482,
-    type: 3}
-  m_PrefabInstance: {fileID: 585874146592657934}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1562335997
 GameObject:
   m_ObjectHideFlags: 0
@@ -14433,6 +14420,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 585874146916903909, guid: 86f26d4fd55e3e741b15f1a83be8e482,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 585874147346317366, guid: 86f26d4fd55e3e741b15f1a83be8e482,
         type: 3}
       propertyPath: m_AnchoredPosition.x
