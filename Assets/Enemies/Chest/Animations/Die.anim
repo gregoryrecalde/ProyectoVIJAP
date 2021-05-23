@@ -19127,10 +19127,18 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.93333334
+  - time: 0.73333335
     functionName: DieEffect
     data: 
     objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.73333335
+    functionName: PlaySound
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: 7b99d74adf2d5ac448eb57d15a04e514,
+      type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

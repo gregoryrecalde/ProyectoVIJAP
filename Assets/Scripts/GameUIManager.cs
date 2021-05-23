@@ -9,7 +9,7 @@ public class GameUIManager : MonoBehaviour
     public TextMeshProUGUI scoreTxt;
     public TextMeshProUGUI goalTxt;
     public static Animator animator;
-
+    public bool boss = false;
     public AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
@@ -30,8 +30,11 @@ public class GameUIManager : MonoBehaviour
 
     public void PlaySoundtrack(AudioClip audioClip)
     {
-        audioSource.clip = audioClip;
-        audioSource.Play();
+        if(!boss)
+        {
+            audioSource.clip = audioClip;
+            audioSource.Play();
+        } 
     }
 
 
@@ -49,6 +52,7 @@ public class GameUIManager : MonoBehaviour
 
     public void UpdateGoalMessage()
     {
-        goalTxt.text = "RESCATASTE " + Game.pets + " GATITOS";
+        if(boss) goalTxt.text = "¡ERES UN HÉROE!";
+        else goalTxt.text = "RESCATASTE " + Game.pets + " GATITOS";
     }
 }

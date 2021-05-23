@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public bool boss = false;
     public static Animator animator;
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
+        if(boss) animator.Play("BossEntry");
     }
-
+    
     public static void Shake()
     {
         animator.Play("Shake");

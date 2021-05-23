@@ -23,6 +23,8 @@ public class Game : MonoBehaviour
 
     public static bool waitPlayerAnswer = false;
 
+    public bool boss = false;
+
     public GameUIManager gameUIManager;
     public int currentLevel = 1;
     public AudioClip pausaClip;
@@ -34,15 +36,15 @@ public class Game : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         state = 1;
         food = 0;
-        water =0;
+        water = 0;
     }
 
     void Update()
     {
-        
-        if(Input.GetKeyDown(KeyCode.P) && state == 1)
+
+        if (Input.GetKeyDown(KeyCode.P) && state == 1)
         {
-            if(Time.timeScale!=0)
+            if (Time.timeScale != 0)
             {
                 Time.timeScale = 0;
                 pausaText.SetActive(true);
@@ -54,19 +56,20 @@ public class Game : MonoBehaviour
                 pausaText.SetActive(false);
                 PlaySound(resumeClip);
             }
-            
+
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             SceneController.LoadScene("MainMenu");
         };
 
-        Debug.Log("pets "+pets+" | goalLevel: "+goalLevel+"| state :"+state);
+        Debug.Log("pets " + pets + " | goalLevel: " + goalLevel + "| state :" + state);
         if (pets >= goalLevel && state == 1)
         {
             Debug.Log("Level Complete " + currentLevel);
             currentLevel++;
-            canvasAnimator.SetTrigger("Win");
+            if (boss) canvasAnimator.SetTrigger("WinBoss");
+            else canvasAnimator.SetTrigger("Win");
             state = 2;
         }
         if (state == 3 || state == 2)
@@ -77,8 +80,8 @@ public class Game : MonoBehaviour
             gameUIManager.UpdateScore();
 
             gameUIManager.UpdateGoalMessage();
-            if(currentLevel == 5) SaveScore();
-            if(state == 3) SaveScore();
+            if (boss) SaveScore();
+            if (state == 3) SaveScore();
             goalLevel = 0;
             pets = 0;
             state = 4;
@@ -87,7 +90,7 @@ public class Game : MonoBehaviour
 
     public void NextLevel()
     {
-        if(currentLevel == 5) SceneController.LoadScene("MainMenu");
+        if (boss) SceneController.LoadScene("MainMenu");
         else SceneController.LoadLevel(currentLevel);
     }
     public static void SaveScore()

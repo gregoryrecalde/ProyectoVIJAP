@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -652,7 +652,7 @@ PrefabInstance:
     - target: {fileID: 598426071998494168, guid: 7b83e78b7c81b1b43a706f6ed8687bd8,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 59.7
+      value: 54.99
       objectReference: {fileID: 0}
     - target: {fileID: 598426071998494168, guid: 7b83e78b7c81b1b43a706f6ed8687bd8,
         type: 3}
@@ -9461,7 +9461,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7774566, y: 1}
+    m_SensorSize: {x: 1.7739726, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -10485,6 +10485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4eebc4fa34f56a43b4e47f2ae748d21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boss: 0
 --- !u!1 &1491472360
 GameObject:
   m_ObjectHideFlags: 0
@@ -14420,10 +14421,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 585874146661604955, guid: 86f26d4fd55e3e741b15f1a83be8e482,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0
+      objectReference: {fileID: 0}
     - target: {fileID: 585874146916903909, guid: 86f26d4fd55e3e741b15f1a83be8e482,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 585874147346317366, guid: 86f26d4fd55e3e741b15f1a83be8e482,
         type: 3}

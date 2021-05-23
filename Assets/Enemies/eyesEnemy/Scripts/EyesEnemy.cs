@@ -214,14 +214,18 @@ public class EyesEnemy : MonoBehaviour
             Vision();
             if (attack1)
             {
+            Debug.Log("Attack 1 "+target);
                 if (target != null)
                 {
+                    
                     if (!target.GetComponent<PlayerController>().isDied) animator.Play("Attack01");
 
                 }
             }
             else if (attack2)
             {
+                
+            Debug.Log("Attack 2 "+target);
                 if (target != null)
                 {
                     if (!target.GetComponent<PlayerController>().isDied) animator.Play("Attack02");

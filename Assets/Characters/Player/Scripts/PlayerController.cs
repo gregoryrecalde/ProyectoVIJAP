@@ -66,8 +66,10 @@ public class PlayerController : MonoBehaviour
     AudioSource audioSource;
     // Start is called before the first frame update
 
-    float timeToRespawn = 10.5f;
+    float timeToRespawn = 10.9f;
     Animator canvasAnimator;
+
+    bool canRespawn = false;
 
     void Start()
     {
@@ -79,6 +81,8 @@ public class PlayerController : MonoBehaviour
         canvasAnimator = GameObject.Find("Game").GetComponentInChildren<Animator>();
         lifeBar = GameObject.Find("PlayerLifebar").GetComponent<Slider>();
         canAction = true;
+
+        isDied = false;
 
     }
 
@@ -168,6 +172,11 @@ public class PlayerController : MonoBehaviour
         }
         return false;
     }
+
+    void ActivateCanRespawn()
+    {
+        canRespawn = true;
+    }
     void Update()
     {
 
@@ -240,7 +249,7 @@ public class PlayerController : MonoBehaviour
             }
 
             // Changes the height position of the player..
-            if (Input.GetButtonDown("Jump") && groundedPlayer && canAction)
+            if (Input.GetButtonDown("Jump") && groundedPlayer)
             {
                 PlaySound(audioClips[1]);
                 playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
@@ -259,8 +268,10 @@ public class PlayerController : MonoBehaviour
             playerVelocity.y += gravityValue * Time.deltaTime;
             controller.Move(playerVelocity * Time.deltaTime);
         }
-        if(Game.waitPlayerAnswer && isDied && Game.state!=4)
+        if (Game.waitPlayerAnswer && isDied && Game.state != 4 && canRespawn && !isDieRecovering)
         {
+
+            Debug.Log("timeToRespawn " + timeToRespawn);
             timeToRespawnTxt.text = ((int)timeToRespawn).ToString();
             if (timeToRespawn <= 0)
             {
@@ -268,8 +279,11 @@ public class PlayerController : MonoBehaviour
                 Invoke("GoToMenu", 5);
             }
             else timeToRespawn -= Time.deltaTime;
-            
-            if (Input.anyKeyDown && !isDieRecovering) Respawn();
+
+            if (Input.anyKeyDown)
+            {
+                Respawn();
+            }
         }
 
     }
@@ -289,11 +303,15 @@ public class PlayerController : MonoBehaviour
         if (playerProperties.GetLife() <= 0)
         {
             {
+                isDefending = false;
                 Game.waitPlayerAnswer = true;
                 isDied = true;
                 animator.SetBool("IsDied", isDied);
                 animator.Play("Die");
                 canvasAnimator.SetTrigger("Die");
+                canAction = false;
+                timeToRespawn = 10.9f;
+                Invoke("ActivateCanRespawn", 0.5f);
             }
         }
     }
@@ -344,16 +362,20 @@ public class PlayerController : MonoBehaviour
             go.transform.position = transform.position;
             animator.Play("DieRecoverCustom");
             isDieRecovering = true;
+            isDefending = false;
+            canAction = true;
+
         }
 
     }
     void DieRecover()
     {
+        timeToRespawn = 10.9f;
         playerProperties.ResetLife();
+        canRespawn = true;
         isDieRecovering = false;
         isDied = false;
         animator.SetBool("IsDied", isDied);
-        timeToRespawn = 10.5f;
     }
 
 
